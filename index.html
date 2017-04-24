@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="css/style.css" rel="stylesheet">
+    <style>
+        body{
+            background: whitesmoke;
+        }
+        .image-container{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: auto;
+            transform: translate(-50%, -50%);
+            width: 85%;
+        }
+
+        button{
+            height:350px;
+            padding: 3%;
+            width: 400px;
+            max-width: 100%;
+            border-radius: 5%;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 50px;
+            color: white;
+            background-color: #003;
+            margin: auto;
+            display: block;
+            box-shadow: 1px 1px 10px rgba(0, 0, 0, .7);
+        }
+
+        span{
+            color: yellow;
+            font-weight: 900;
+            font-size: 60px;
+            text-shadow: 3px 3px 25px dimgrey;
+        }
+
+        .image-container > div{
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        img{
+            margin: auto;
+            box-shadow: 3px 3px 20px rgba(0, 0, 0, .7);
+        }
+
+    </style>
+    </head>
+    <body>
+    <div class="image-container">
+        <div id="images"></div>
+        <button type="submit">Big <span>Flickr</span> Button</button>
+    </div>
+    <script
+        src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous">
+    </script>
+    <script>
+        $(document).ready(function(){
+        $('button').click(function(){
+            $(this).hide();
+            getFlickrImagesJquery();
+        })
+
+        /*
+        function getFlickrImages(){
+            var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', flickerAPI);
+            xhr.onload = function(){
+                if (xhr.status == 200){
+
+                }
+            }
+            xhr.send();
+        }
+        */
+
+        function getFlickrImagesJquery() {
+            var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+            $.getJSON(flickerAPI, {
+                tags: "Baruch College",
+                tagmode: "any",
+                format: "json"
+                })
+            .done(function( data ){ 
+            $.each( data.items, function(i, item) {
+                $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+                if ( i === 5 ) {
+                    return false;
+                }
+                });
+            });
+        };
+    })
+    </script>
+    </body>
+</html>
